@@ -24,6 +24,7 @@ jobs:
           ARGO_SERVER: ${{ secrets.ARGO_SERVER }}
           ARGO_TOKEN: ${{ secrets.ARGO_TOKEN }}
         run: |
+          argo --help
           argo login --username $ARGO_SERVER --password $ARGO_TOKEN
 
       - name: Submit Argo Workflow
