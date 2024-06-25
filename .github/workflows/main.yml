@@ -8,6 +8,15 @@ on:
 jobs:
   submit-workflow:
     runs-on: ubuntu-latest
+    env:
+      ARGO_SERVER: ${{ secrets.ARGO_SERVER }}
+      ARGO_HTTP1: true
+      ARGO_SECURE: true
+      ARGO_BASE_HREF: ''
+      ARGO_TOKEN: ${{ secrets.ARGO_TOKEN }}
+      ARGO_NAMESPACE: argo  # Replace with your desired namespace
+      KUBECONFIG: /dev/null
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -20,17 +29,25 @@ jobs:
           sudo mv argo-linux-amd64 /usr/local/bin/argo
 
       - name: Set up environment variables
-        env:
-          ARGO_SERVER: ${{ secrets.ARGO_SERVER }}
-          ARGO_TOKEN: ${{ secrets.ARGO_TOKEN }}
-          ARGO_NAMESPACE: argo  # Replace with your desired namespace
         run: |
           echo "ARGO_SERVER=$ARGO_SERVER" >> $GITHUB_ENV
+          echo "ARGO_HTTP1=$ARGO_HTTP1" >> $GITHUB_ENV
+          echo "ARGO_SECURE=$ARGO_SECURE" >> $GITHUB_ENV
+          echo "ARGO_BASE_HREF=$ARGO_BASE_HREF" >> $GITHUB_ENV
           echo "ARGO_TOKEN=$ARGO_TOKEN" >> $GITHUB_ENV
           echo "ARGO_NAMESPACE=$ARGO_NAMESPACE" >> $GITHUB_ENV
+          echo "KUBECONFIG=$KUBECONFIG" >> $GITHUB_ENV
           cat $GITHUB_ENV  # Output environment variables for debugging
+
+      - name: Test DNS resolution
+        run: |
+          ping argo-workflows.us-central1.integration.project44.com
+
+      - name: Login to Argo Server
+        run: |
+          argo login --username $ARGO_SERVER --password $ARGO_TOKEN
 
       - name: Submit Argo Workflow
         run: |
-          argo submit my-workflow.yaml
+          argo submit --namespace $ARGO_NAMESPACE my-workflow.yaml
         # Replace my-workflow.yaml with the path to your actual workflow YAML file
