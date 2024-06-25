@@ -32,5 +32,5 @@ jobs:
 
       - name: Submit Argo Workflow
         run: |
-          argo submit --namespace $ARGO_NAMESPACE my-workflow.yaml
+          argo submit my-workflow.yaml
         # Replace my-workflow.yaml with the path to your actual workflow YAML file
