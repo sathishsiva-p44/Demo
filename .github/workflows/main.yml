@@ -41,5 +41,6 @@ jobs:
 
       - name: Submit Argo Workflow
         run: |
-          argo submit my-workflow.yaml
+          argo version
+          argo list
         # Replace my-workflow.yaml with the path to your actual workflow YAML file
