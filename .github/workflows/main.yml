@@ -39,14 +39,6 @@ jobs:
           echo "KUBECONFIG=$KUBECONFIG" >> $GITHUB_ENV
           cat $GITHUB_ENV  # Output environment variables for debugging
 
-      - name: Test DNS resolution
-        run: |
-          ping argo-workflows.us-central1.integration.project44.com
-
-      - name: Login to Argo Server
-        run: |
-          argo login --username $ARGO_SERVER --password $ARGO_TOKEN
-
       - name: Submit Argo Workflow
         run: |
           argo submit --namespace $ARGO_NAMESPACE my-workflow.yaml
