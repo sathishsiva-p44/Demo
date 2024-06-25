@@ -3,7 +3,7 @@ name: Submit Argo Workflow
 on:
   push:
     branches:
-      - main  # Adjust to your main branch name
+      - main  # Adjust to your main branch name or other branches
 
 jobs:
   submit-workflow:
@@ -19,13 +19,13 @@ jobs:
           chmod +x argo-linux-amd64
           sudo mv argo-linux-amd64 /usr/local/bin/argo
 
-      - name: Login to Argo Server (if authentication is required)
+      - name: Set up environment variables
         env:
           ARGO_SERVER: ${{ secrets.ARGO_SERVER }}
           ARGO_TOKEN: ${{ secrets.ARGO_TOKEN }}
         run: |
-          argo --help
-          argo login --username $ARGO_SERVER --password $ARGO_TOKEN
+          echo "ARGO_SERVER=$ARGO_SERVER" >> $GITHUB_ENV
+          echo "ARGO_TOKEN=$ARGO_TOKEN" >> $GITHUB_ENV
 
       - name: Submit Argo Workflow
         run: |
