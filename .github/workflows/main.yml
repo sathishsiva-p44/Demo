@@ -3,30 +3,30 @@ name: Submit Argo Workflow
 on:
   push:
     branches:
-      - main
+      - main  # Adjust to your main branch name
 
 jobs:
-  submit-argo-workflow:
+  submit-workflow:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Install Argo CLI
+        run: |
+          curl -sLO https://github.com/argoproj/argo/releases/latest/download/argo-linux-amd64.gz
+          gunzip argo-linux-amd64.gz
+          chmod +x argo-linux-amd64
+          sudo mv argo-linux-amd64 /usr/local/bin/argo
 
-    - name: Install HTTPie
-      run: |
-        python -m pip install httpie
+      - name: Login to Argo Server (if authentication is required)
+        env:
+          ARGO_SERVER: ${{ secrets.ARGO_SERVER }}
+          ARGO_TOKEN: ${{ secrets.ARGO_TOKEN }}
+        run: |
+          argo login --username $ARGO_SERVER --password $ARGO_TOKEN
 
-    - name: Submit Argo Workflow
-      env:
-        ARGO_SERVER: ${{ secrets.ARGO_SERVER }}
-        ARGO_TOKEN: ${{ secrets.ARGO_TOKEN }}
-      run: |
-        http --auth-type=jwt --auth="${{ secrets.ARGO_TOKEN }}" \
-        POST "${{ secrets.ARGO_SERVER }}/api/v1/workflows/argo/submit" \
-        workflow=@argo-workflow.yml
+      - name: Submit Argo Workflow
+        run: |
+          argo submit my-workflow.yaml
+        # Replace my-workflow.yaml with the path to your actual workflow YAML file
