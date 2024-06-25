@@ -9,11 +9,11 @@ jobs:
   submit-workflow:
     runs-on: ubuntu-latest
     env:
-      ARGO_SERVER: ${{ secrets.ARGO_SERVER }}
+      ARGO_SERVER: 'argo-workflows.us-central1.integration.project44.com:443' 
       ARGO_HTTP1: true
       ARGO_SECURE: true
       ARGO_BASE_HREF: ''
-      ARGO_TOKEN: ${{ secrets.ARGO_TOKEN }}
+      ARGO_TOKEN: 'Bearer v2:eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2R0NNIiwiemlwIjoiREVGIn0.HPshKJ9Ua9i3exYJpJ3dKKwDPTRV_ITGxc4nywy0K7AJTawAiFKyLeZjp_YPBZwpR55PUMgG70e2SdLiepnLvo7ksfOQwFz1W9Z9EWg-fh1Wwtgruxs70Je-g3oKIReZIpOh_SqWnpzsJFWDoUGv9QJbFRgIfNVpY8pWzvzc-Ev5NGIbFuIUeiCLxhiCNrw2MfegP5Ywqjners2JfrHoZHptyGD_gojEJJ8M61KqFVWRdyqCUD28BbrDlAVvTpu1VyHH5A6iwlulQXAqdb6MzBNMcOATKUNEip0Wgh_D_2FP3MiaizkeRbjq5V4RcePipxCOO-0IMNxrEVP6VX_MUA.uGgG7jJJRR0WpnJH.yXmc4O12OIfjaWrPe1Rn-sxbx4UnPOiMYwFraL4ghGiFpW1qbthRx2SpUX_YO1PhU_9EybB0gosGP8JxKIU0-AfdoGxwD3GCs382y0ShoNv3lJ1PE5FxdORVpzrzlRM3tmcr9QMK0vfcBCoLx8Eouo4QDY0Br2g3IZA47lB0Jt8XHnlZskU2rEDuGFvT75jYWn9yQzdVcTNU40r8PA2k2u6EReg4g_oFTHn88Swc_7WREaY33HDeZoJ1OkrkRfIxZXSoRkX63RuFegkzLfDoGCWI1zu946ls_3LslQ2TJRdmOQ8YqWVl-L8x2ajqL1y7cyp8TbfeAfc4Rq3bAm69fVpk1xoqkpyty0FJYT1WWPJ9dvdC2GzON4fFdrtTwyVTB5oFcA1GTKwpNHnm5tGYtxrNXZBCcub5WUFvXAnWMlN8BZHWgrQeRW9css9R68FpV6AubZeYQXjVZakBRKS7D_wonskdRKePPXE974KyJ8DWjulp9_QF2hsANJfA8qOE3llMUK7bvrbw2QzqFrJjDTxoT4Gulgjftjwg__WmTBCeOp93hYF8V5EtCdBSEmhW1NZI3942bQtSwTuwkDOobSovgYxYxFG2UatLJlS8s35J7xcVjq6Lj4ZTCMJog7YeflKr8zCFdaZzAvjEeVKhULnbOlQp67AzpZZvsOuKwwSb2xybmPEHclovxp70vEKr3KBTWYcOujW--majXVz1TIYKfLye8cjJMJ0ZrwBPTml0nfIJpxuHPgg6i5hg3MwAUpfTQTXEsa34Ha8T_Rwr6iToJKGSop64kuAfjlKbBedmQhU_FFT9IHZFo7cJttw8C-STz7rKaxHADSpPKXlPNosZbA.xv_nyz34wlEZwuIi1qffjQ'
       ARGO_NAMESPACE: argo  # Replace with your desired namespace
       KUBECONFIG: /dev/null
 
@@ -42,5 +42,4 @@ jobs:
       - name: Submit Argo Workflow
         run: |
           argo version
-          argo list
         # Replace my-workflow.yaml with the path to your actual workflow YAML file
